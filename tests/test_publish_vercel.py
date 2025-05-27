@@ -317,8 +317,46 @@ def test_generate_vercel_json(mock_run, mock_which):
     assert json.loads(result.output) == {
         "name": "foo",
         "version": 2,
-        "builds": [{"src": "index.py", "use": "@vercel/python@3.0.7"}],
-        "routes": [{"src": "(.*)", "dest": "index.py"}],
+        "builds": [{"src": "index.py", "use": "@vercel/python@4.7.2"}],
+        "rewrites": [{"source": "(.*)", "destination": "index.py"}],
+    }
+
+
+@mock.patch("shutil.which")
+@mock.patch("datasette_publish_vercel.run")
+def test_python_runtime_version(mock_run, mock_which):
+    mock_which.return_value = True
+    mock_run.return_value = mock.Mock(0)
+    runner = CliRunner()
+    # With no arg
+    result = runner.invoke(
+        cli.cli,
+        [
+            "publish", "vercel", "--project", "foo", "--generate-vercel-json",
+            "--python-runtime-version",
+        ],
+    )
+    assert result.exit_code == 0
+    assert json.loads(result.output) == {
+        "name": "foo",
+        "version": 2,
+        "builds": [{"src": "index.py", "use": "@vercel/python"}],
+        "rewrites": [{"source": "(.*)", "destination": "index.py"}],
+    }
+    # With arg
+    result = runner.invoke(
+        cli.cli,
+        [
+            "publish", "vercel", "--project", "foo", "--generate-vercel-json",
+            "--python-runtime-version", "6.6.6",
+        ],
+    )
+    assert result.exit_code == 0
+    assert json.loads(result.output) == {
+        "name": "foo",
+        "version": 2,
+        "builds": [{"src": "index.py", "use": "@vercel/python@6.6.6"}],
+        "rewrites": [{"source": "(.*)", "destination": "index.py"}],
     }
 
 

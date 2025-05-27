@@ -82,6 +82,8 @@ Options:
                                   deploying
   --vercel-json FILENAME          Custom vercel.json file to use instead of generating
                                   one
+  --python-runtime-version TEXT   Version of the Vercel Python runtime to use; use with
+                                  no value for latest
   --setting SETTING...            Setting, see docs.datasette.io/en/stable/settings.html
   --crossdb                       Enable cross-database SQL queries
   --help                          Show this message and exit.
@@ -109,6 +111,18 @@ Then run the deploy using:
 Datasette uses [a secret string](https://docs.datasette.io/en/stable/settings.html#configuring-the-secret) for purposes such as signing authentication cookies. This secret is reset when the server restarts, which will sign out any users who are authenticated using a signed cookie.
 
 You can avoid this by generating a `DATASETTE_SECRET` secret string and setting that as a [Vercel environment variable](https://vercel.com/docs/concepts/projects/environment-variables). If you do this the secret will stay consistent and your users will not be signed out.
+
+## Choosing the Vercel Python Runtime version
+
+Vercel keep publishing new versions of their Python runtime package, and it may happen that this package falls behind. While it is possible to always choose the latest version, this may lead to subtle breakage; when you deploy an app, you do not want the runtime to be replaced under you without your knowledge. You can choose the runtime version in deployment using the `--python-runtime-version` flag:
+
+    datasette publish vercel my-database.db \
+      --project=my-database \
+      --python-runtime-version=4.7.2
+
+Of course, you can use this flag also when generating a custom `vercel.json`, and then you do not need to specify it on every deployment.
+
+Since, as noted above, it is bad practice to leave the runtime version unspecified, a default version is chosen. But if you prefer to take whatever Vercel gives you, use the flag with no value.
 
 ## Using this with GitHub Actions
 

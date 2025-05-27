@@ -217,7 +217,7 @@ def _publish_vercel(
             "name": project,
             "version": 2,
             "builds": [{"src": "index.py", "use": "@vercel/python@3.0.7"}],
-            "routes": [{"src": "(.*)", "dest": "index.py"}],
+            "rewrites": [{"source": "(.*)", "destination": "index.py"}],
         },
         indent=4,
     )

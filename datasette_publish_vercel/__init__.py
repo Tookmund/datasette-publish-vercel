@@ -146,6 +146,13 @@ def add_vercel_options(cmd):
                 help="Custom vercel.json file to use instead of generating one",
             ),
             click.option(
+                "--python-runtime-version",
+                is_flag=False,
+                default="4.7.2",  # current at the time this is written
+                flag_value="",
+                help="Version of the Vercel Python runtime to use; use with no value for latest",
+            ),
+            click.option(
                 "--setting",
                 "settings",
                 type=Setting(),
@@ -189,6 +196,7 @@ def _publish_vercel(
     generate_dir,
     generate_vercel_json,
     vercel_json,
+    python_runtime_version,
     settings,
     crossdb,
 ):
@@ -212,12 +220,17 @@ def _publish_vercel(
     if generate_dir:
         generate_dir = str(pathlib.Path(generate_dir).resolve())
 
+    if python_runtime_version:
+        python_runtime_version = "@" + python_runtime_version
+
     vercel_json_content = json.dumps(
         {
             "name": project,
             "version": 2,
-            "builds": [{"src": "index.py", "use": "@vercel/python@3.0.7"}],
-            "routes": [{"src": "(.*)", "dest": "index.py"}],
+            "builds": [
+                {"src": "index.py", "use": f"@vercel/python{python_runtime_version}"},
+            ],
+            "rewrites": [{"source": "(.*)", "destination": "index.py"}],
         },
         indent=4,
     )

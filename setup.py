@@ -13,16 +13,16 @@ def get_long_description():
 
 
 setup(
-    name="datasette-publish-vercel",
+    name="tookmund-datasette-publish-vercel",
     description="Datasette plugin for publishing data using Vercel",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
     author="Simon Willison",
-    url="https://github.com/simonw/datasette-publish-vercel",
+    url="https://github.com/tookmund/datasette-publish-vercel",
     project_urls={
-        "Issues": "https://github.com/simonw/datasette-publish-vercel/issues",
-        "CI": "https://github.com/simonw/datasette-publish-vercel/actions",
-        "Changelog": "https://github.com/simonw/datasette-publish-vercel/releases",
+        "Issues": "https://github.com/tookmund/datasette-publish-vercel/issues",
+        "CI": "https://github.com/tookmund/datasette-publish-vercel/actions",
+        "Changelog": "https://github.com/tookmund/datasette-publish-vercel/releases",
     },
     license="Apache License, Version 2.0",
     version=VERSION,

@@ -281,13 +281,8 @@ def _publish_vercel(
                 crossdb=",\n    crossdb=True" if crossdb else "",
             )
         )
-        datasette_install = "datasette"
-        if branch:
-            datasette_install = (
-                "https://github.com/simonw/datasette/archive/{}.zip".format(branch)
-            )
         open("requirements.txt", "w").write(
-            "\n".join([datasette_install, "pysqlite3-binary"] + list(install))
+            "\n".join(["datasette", "pysqlite3-binary"] + list(install))
         )
         if generate_dir:
             # Copy these to the specified directory

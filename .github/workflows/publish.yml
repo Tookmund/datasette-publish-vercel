@@ -23,6 +23,13 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
         restore-keys: |
           ${{ runner.os }}-pip-
+    - uses: actions/setup-node@v6
+      name: Install Node.js
+      with:
+        node-version: '24.x'
+    - name: Install Vercel
+      run: |
+        npm i -g vercel
     - name: Install dependencies
       run: |
         pip install -e '.[test]'
